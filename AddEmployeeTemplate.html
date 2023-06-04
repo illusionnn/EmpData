@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html lang = 'en'>
+<head>
+<title>HR Application</title>
+<script>
+function validateForm(frm){
+	var firstInvalidComponent = null;
+	var valid = true;
+	var name = frm.name.value.trim();
+	var nameErrorSection = document.getElementById('nameErrorSection');
+	nameErrorSection.innerHTML='';
+	if(name.length==0){
+		nameErrorSection.innerHTML='Name required';
+		valid = false;
+		firstInvalidComponent = frm.name;
+	}
+	var designationCode = frm.designationCode.value;
+	var designationCodeErrorSection = document.getElementById('designationCodeErrorSection');
+	designationCodeErrorSection.innerHTML='';
+	if(designationCode==-1){
+		designationCodeErrorSection.innerHTML='Select Designation';
+		valid = false;
+		if(firstInvalidComponent==null)firstInvalidComponent = frm.designationCode;
+	}
+	var dateOfBirth = frm.dateOfBirth.value;
+	var dateOfBirthErrorSection = document.getElementById('dateOfBirthErrorSection');
+	dateOfBirthErrorSection.innerHTML='';
+	if(dateOfBirth.length==0){
+		dateOfBirthErrorSection.innerHTML='Select date of birth';
+		valid = false;
+		if(firstInvalidComponent==null)firstInvalidComponent = frm.dateOfBirth;
+	}
+	var genderErrorSection = document.getElementById('genderErrorSection');
+	genderErrorSection.innerHTML='';
+	if(frm.gender[0].checked==false && frm.gender[1].checked==false){
+		genderErrorSection.innerHTML='Select Gender';
+		valid = false;
+	}
+	var basicSalary = frm.basicSalary.value.trim();
+	var basicSalaryErrorSection = document.getElementById('basicSalaryErrorSection');
+	basicSalaryErrorSection.innerHTML='';
+	if(basicSalary.length==0){
+		basicSalaryErrorSection.innerHTML='Basic salary required';
+		valid = false;
+		if(firstInvalidComponent==null)firstInvalidComponent = frm.basicSalary;
+	}
+	else{
+		var v = '0123456789.';
+		var e = 0;
+		var isBasicSalaryValid = true;
+		while(e<basicSalary.length){
+			if(v.indexOf(basicSalary.charAt(e))==-1){
+				basicSalaryErrorSection.innerHTML='Invalid Basic salary';
+				valid = false;
+				if(firstInvalidComponent==null)firstInvalidComponent = frm.basicSalary;
+				isBasicSalaryValid = false;
+				break;
+			}
+			e++;
+		}
+		if(isBasicSalaryValid){
+			var dot = basicSalary.indexOf('.');
+			if(dot!=-1){
+				var numberOfFractions = basicSalary.length-(dot+1);
+				if(numberOfFractions>2){
+					basicSalaryErrorSection.innerHTML='Invalid Basic salary';
+					valid = false;
+					if(firstInvalidComponent==null)firstInvalidComponent = frm.basicSalary;
+				}
+			}
+		}
+	}
+	var panNumber = frm.panNumber.value.trim();
+	var panNumberErrorSection = document.getElementById('panNumberErrorSection');
+	panNumberErrorSection.innerHTML='';
+	if(panNumber.length==0){
+		panNumberErrorSection.innerHTML='Pan Number required';
+		valid = false;
+		if(firstInvalidComponent==null)firstInvalidComponent = frm.panNumber;
+	}
+	var aadharNumber = frm.aadharNumber.value.trim();
+	var adharNumberErrorSection = document.getElementById('aadharNumberErrorSection');
+	aadharNumberErrorSection.innerHTML='';
+	if(aadharNumber.length==0){
+		aadharNumberErrorSection.innerHTML='Aadhar Number required';
+		valid = false;
+		if(firstInvalidComponent==null)firstInvalidComponent = frm.aadharNumber;
+	}
+	if(!valid) firstInvalidComponent.focus();
+	return valid;
+}
+function cancelAddition(){
+	document.getElementById('cancelAdditionForm').submit();
+}
+</script>
+</head>
+<body>
+<!--Main container starts here-->
+<div style='width:90hw;height:auto;border:1px solid black'>
+<!--header container starts here-->
+<div style='margin:5px;width:120hw;height:auto;border:1px solid black'>
+<img style='width:30px;float:left;margin-top:-5px'src = '/styleone/images/logo.png'>
+<div style:'font-size:20px'>Style One</div>
+</div>
+<!--header container ends here-->
+<!--content-section starts here-->
+<div style='width:90hw;height:70vh;margin:5px;border:1px solid white'>
+<!--left panel starts here-->
+<div style='height:65vh;margin:10px;float:left;padding:10px;border:1px solid black'>
+<a href='/styleone/designationsView'>Designations</a><br>
+<b>Employee</b><br><br>
+<a href='/styleone/index.html'>Home</a>
+</div>
+<!--left panel ends here-->
+<!--right panel starts here-->
+<div style='height:65vh;margin-left:120px;margin-right:10px;margin-bottom:10px;margin-top:10px;padding:10px;border:1px solid black'>
+<h2>Employee (Add module)</h2>
+<form method='post' action='/styleone/addEmployee' onsubmit='return validateForm(this)'>
+<table>
+<tr>
+<td>Name</td>
+<td><input type='text' id='name' name='name' maxlength='50' size='51'>
+<span id='nameErrorSection' style='color:red'></span><br><br></td>
+</tr>
+<tr>
+<td>Designation</td>
+<td><select id='designationCode' name='designationCode'>
+<option value='-1'>&lt;Select Designation&gt;</option>
+<option value='1'>Manager</option>
+<option value='2'>Clerk</option>
+<option value='3'>Gardner</option>
+<option value='4'>LiftMan</option>
+<option value='5'>CEO</option>
+<option value='6'>CTO</option>
+<option value='7'>WatchMan</option>
+</select>
+<span id='designationCodeErrorSection' style='color:red'></span>
+</td>
+</tr>
+<tr>
+<td><br>Date of birth</td>
+<td><br><input type='date' id='dateOfBirth' name='dateOfBirth'>
+<span id='dateOfBirthErrorSection' style='color:red'></span>
+</td>
+</tr>
+<tr>
+<td><br>Gender</td>
+<td><br><input type='radio' id='male' name='gender' value='M'>Male
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type='radio' id='female' name='gender' value='F'>Female
+<span id='genderErrorSection' style='color:red'></span>
+</td>
+</tr>
+<tr>
+<td><br>Indian ?</td>
+<td><br><input type='checkbox' name='isIndian' id='isIndian'></td>
+</tr>
+<tr>
+<td><br>Basic Salary</td>
+<td><br><input type='text' style='text-align:right' id='basicSalary' name='basicSalary' maxLength='13'>
+<span id='basicSalaryErrorSection' style='color:red'></span>
+</td>
+</tr>
+<tr>
+<td><br>PAN Number</td>
+<td><br><input type='text' id='panNumber' name='panNumber'>
+<span id='panNumberErrorSection' style='color:red'></span>
+</td>
+</tr>
+<tr>
+<td><br>Aadhar Number</td>
+<td><br><input type='text' id='aadharNumber' name='aadharNumber'>
+<span id='aadharNumberErrorSection' style='color:red'></span>
+</td>
+</tr>
+<tr>
+<td><br><button type='submit'>Add</button></td>
+<td><br><button type='Button' onclick='cancelAddition()'>Cancel</button></td>
+</tr>
+</from>
+</table>
+</div>
+<!--right panel ends here-->
+</div>
+<!--content-section ends here-->
+<!--footer starts here-->
+<div style='width:90hw;height:auto;margin:5px;border:1px solid white;text-align:center'>
+&copy; Chinmay Bhide 2020
+</div>
+<!--footer ends here-->
+</div>
+<!--Main container ends here-->
+<form id ='cancelAdditionForm' action='/styleone/employeeView'>
+</form>
+</body>
+</html>
